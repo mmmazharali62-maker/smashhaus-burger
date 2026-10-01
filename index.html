@@ -417,6 +417,20 @@ function drawBackground(c, key, t, w, h){
   const gg = c.createRadialGradient(w*0.5,h*0.5,0,w*0.5,h*0.5,Math.min(w,h)*0.55);
   gg.addColorStop(0,p.glow+'33'); gg.addColorStop(1,p.glow+'00');
   c.fillStyle = gg; c.fillRect(0,0,w,h);
+  if(img && c === bgCtx){
+    const mobile = w < 700;
+    const bw = mobile ? w*0.92 : Math.min(w*0.46, h*0.9*(img.width/img.height)*1.1);
+    const bh = bw*(img.height/img.width);
+    const bx = mobile ? (w-bw)/2 : w*0.5 + (w*0.5-bw)/2 + Math.sin(t*0.4)*6;
+    const by = mobile ? h*0.08 : h*0.5 - bh*0.52 + Math.cos(t*0.5)*5;
+    const off = document.createElement('canvas'); off.width=Math.ceil(bw); off.height=Math.ceil(bh);
+    const oc = off.getContext('2d'); oc.drawImage(img,0,0,off.width,off.height);
+    oc.globalCompositeOperation='destination-in';
+    const m = oc.createRadialGradient(off.width/2,off.height/2,Math.min(off.width,off.height)*0.25,off.width/2,off.height/2,Math.max(off.width,off.height)*0.58);
+    m.addColorStop(0,'rgba(0,0,0,1)'); m.addColorStop(1,'rgba(0,0,0,0)');
+    oc.fillStyle=m; oc.fillRect(0,0,off.width,off.height);
+    c.globalAlpha=0.95; c.drawImage(off,bx,by,bw,bh); c.globalAlpha=1;
+  }
   c.fillStyle = p.glow;
   particles.forEach(pt=>{
     const yy=((pt.y - t*pt.v) % 1 + 1)%1;
