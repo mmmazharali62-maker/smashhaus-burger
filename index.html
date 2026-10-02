@@ -123,6 +123,7 @@ body:not(.intro-ready) .header,body:not(.intro-ready) .planet-list,body:not(.int
 .planet-list.is-switching .planet-item.active:before{animation:active-dot .55s cubic-bezier(.22,1,.36,1) .18s both}
 @keyframes reveal-down{from{opacity:0;filter:blur(8px);transform:translateY(-18px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
 @keyframes reveal-side{from{opacity:0;filter:blur(8px);transform:translate(-20px,-43%)}to{opacity:1;filter:blur(0);transform:translate(0,-43%)}}
+@keyframes title-rise-m{from{opacity:0;filter:blur(12px);transform:translate(0,42px)}to{opacity:1;filter:blur(0);transform:translate(0,0)}}
 @keyframes title-rise{from{opacity:0;filter:blur(12px);transform:translate(-32px,42px)}to{opacity:1;filter:blur(0);transform:translate(-32px,0)}}
 @keyframes fact-rise{from{opacity:0;filter:blur(7px);transform:translateY(18px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
 @keyframes portal-caption{from{opacity:0;filter:blur(7px);transform:translateY(22px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
@@ -151,6 +152,13 @@ body:not(.intro-ready) .header,body:not(.intro-ready) .planet-list,body:not(.int
   .planet-item.active{font-size:16px}
 }
 @media(max-width:640px){
+  .planet-content h1{transform:translateX(0)!important}
+  .content-revealing h1{animation-name:title-rise-m!important}
+  .portal-wrap{top:52%!important;width:min(200px,52vw)!important}
+  .planet-content{bottom:12px!important}
+  .planet-content h1{font-size:clamp(84px,24vw,130px)!important;margin-bottom:10px!important}
+  .fact{padding:4px 0!important}
+  .planet-content dl{font-size:12px!important}
   .experience{min-height:600px}
   .planet-list{display:none}
   .portal-wrap{top:44%;width:min(260px,66vw)}
@@ -419,12 +427,12 @@ function drawBackground(c, key, t, w, h){
   c.fillStyle = gg; c.fillRect(0,0,w,h);
   if(img && c === bgCtx){
     const mobile = w < 700;
-    const maxH = mobile ? h*0.34 : h*0.5;
+    const maxH = mobile ? h*0.26 : h*0.5;
     let bh = maxH, bw = bh*(img.width/img.height);
     const maxW = mobile ? w*0.9 : w*0.36;
     if(bw > maxW){ bw = maxW; bh = bw*(img.height/img.width); }
     const bx = mobile ? (w-bw)/2 : w*0.5 + (w*0.5-bw)/2 + Math.sin(t*0.4)*6;
-    const by = mobile ? h*0.1 : h*0.1 + Math.cos(t*0.5)*5;
+    const by = mobile ? h*0.11 : h*0.1 + Math.cos(t*0.5)*5;
     const off = document.createElement('canvas'); off.width=Math.ceil(bw); off.height=Math.ceil(bh);
     const oc = off.getContext('2d'); oc.drawImage(img,0,0,off.width,off.height);
     oc.globalCompositeOperation='destination-in';
